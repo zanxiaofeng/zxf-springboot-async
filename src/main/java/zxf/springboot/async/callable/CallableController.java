@@ -44,7 +44,7 @@ public class CallableController {
             System.out.println("CallableController::timeout.inner.start：" + Thread.currentThread().getName());
             Thread.sleep(35 * 1000);
             System.out.println("CallableController::timeout.inner.end：" + Thread.currentThread().getName());
-            return LocalDateTime.now().toString();
+            return "Callable timeout";
         };
 
         System.out.println("CallableController::timeout.end：" + Thread.currentThread().getName());
