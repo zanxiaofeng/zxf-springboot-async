@@ -7,14 +7,22 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @EnableAsync
 public class AsyncConfig implements AsyncConfigurer {
     @Override
     public Executor getAsyncExecutor() {
-        ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
-        threadPoolTaskExecutor.initialize();
-        return threadPoolTaskExecutor;
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setCorePoolSize(2);
+        taskExecutor.setMaxPoolSize(10);
+        taskExecutor.setQueueCapacity(25);
+        taskExecutor.setKeepAliveSeconds(200);
+        taskExecutor.setThreadNamePrefix("my-thread-pool-2-");
+        // 线程池对拒绝任务（无线程可用）的处理策略，目前只支持AbortPolicy、CallerRunsPolicy；默认为后者
+        taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        taskExecutor.initialize();
+        return taskExecutor;
     }
 
     @Override
@@ -24,6 +32,7 @@ public class AsyncConfig implements AsyncConfigurer {
 
     private AsyncUncaughtExceptionHandler customAsyncExceptionHandler() {
         return (throwable, method, obj) -> {
+            System.out.println("AsyncConfig::customAsyncExceptionHandler.inner.start：" + Thread.currentThread().getName());
             System.out.println("Exception message - " + throwable.getMessage());
             System.out.println("Method name - " + method.getName());
             for (Object param : obj) {

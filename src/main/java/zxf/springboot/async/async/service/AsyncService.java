@@ -28,7 +28,12 @@ public class AsyncService {
     @Async
     public CompletableFuture<String> timeout(String message) throws InterruptedException {
         System.out.println("AsyncService::timeout.start：" + Thread.currentThread().getName());
-        Thread.sleep(35 * 1000L);
+        try {
+            Thread.sleep(35 * 1000L);
+        } catch (InterruptedException e) {
+            System.out.println("AsyncService::timeout.exception：" + Thread.currentThread().getName());
+            throw e;
+        }
         System.out.println("AsyncService::timeout.end：" + Thread.currentThread().getName());
         return CompletableFuture.completedFuture("Async timeout");
     }
@@ -36,8 +41,7 @@ public class AsyncService {
     @Async
     public CompletableFuture<String> error(String message) throws InterruptedException {
         System.out.println("AsyncService::error.start：" + Thread.currentThread().getName());
-        Thread.sleep(35 * 1000L);
-        System.out.println("AsyncService::error.end：" + Thread.currentThread().getName());
-        return CompletableFuture.completedFuture(LocalDate.now().toString());
+        Thread.sleep(10 * 1000L);
+        throw new RuntimeException("Async error");
     }
 }

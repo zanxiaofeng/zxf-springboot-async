@@ -42,7 +42,12 @@ public class CallableController {
         System.out.println("CallableController::timeout.start：" + Thread.currentThread().getName());
         Callable<String> result = () -> {
             System.out.println("CallableController::timeout.inner.start：" + Thread.currentThread().getName());
-            Thread.sleep(35 * 1000);
+            try {
+                Thread.sleep(35 * 1000L);
+            } catch (InterruptedException e) {
+                System.out.println("CallableController::timeout.inner.exception：" + Thread.currentThread().getName());
+                throw e;
+            }
             System.out.println("CallableController::timeout.inner.end：" + Thread.currentThread().getName());
             return "Callable timeout";
         };

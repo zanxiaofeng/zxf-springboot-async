@@ -43,7 +43,12 @@ public class WebAsyncTaskController {
         System.out.println("WebAsyncTaskController::timeout.start：" + Thread.currentThread().getName());
         WebAsyncTask<String> result = createWebAsyncTask(() -> {
             System.out.println("WebAsyncTaskController::timeout.inner.start：" + Thread.currentThread().getName());
-            Thread.sleep(35 * 1000L);
+            try {
+                Thread.sleep(35 * 1000L);
+            } catch (InterruptedException e) {
+                System.out.println("WebAsyncTaskController::timeout.inner.exception：" + Thread.currentThread().getName());
+                throw e;
+            }
             System.out.println("WebAsyncTaskController::timeout.inner.end：" + Thread.currentThread().getName());
             return "WebAsyncTask timeout";
         });

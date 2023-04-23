@@ -56,6 +56,7 @@ public class DeferredResultController {
             try {
                 Thread.sleep(35 * 1000L);
             } catch (InterruptedException e) {
+                System.out.println("DeferredResultController::timeout.inner.exception：" + Thread.currentThread().getName());
                 throw new RuntimeException(e);
             }
             result.setResult("DeferredResult timeout");

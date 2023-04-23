@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 public class NotificationService {
     @Async
     public void notify(String message) throws InterruptedException {
-        System.out.println("NotificationService::notify.start：" + Thread.currentThread().getName());
+        System.out.println("NotificationService::notify.start：" + message + "-" + Thread.currentThread().getName());
         Thread.sleep(10 * 1000L);
-        System.out.println("NotificationService::notify.end：" + Thread.currentThread().getName());
+        System.out.println("NotificationService::notify.end：" + message + "-" + Thread.currentThread().getName());
     }
 }
