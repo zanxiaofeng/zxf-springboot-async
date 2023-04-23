@@ -1,9 +1,12 @@
 package zxf.springboot.async.async;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import zxf.springboot.async.async.service.NotificationService;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
@@ -11,6 +14,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 @EnableAsync
 public class AsyncConfig implements AsyncConfigurer {
+    private static final Logger logger = LoggerFactory.getLogger(AsyncConfig.class);
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
@@ -32,11 +36,11 @@ public class AsyncConfig implements AsyncConfigurer {
 
     private AsyncUncaughtExceptionHandler customAsyncExceptionHandler() {
         return (throwable, method, obj) -> {
-            System.out.println("AsyncConfig::customAsyncExceptionHandler.inner.start：" + Thread.currentThread().getName());
-            System.out.println("Exception message - " + throwable.getMessage());
-            System.out.println("Method name - " + method.getName());
+            logger.info("AsyncConfig::customAsyncExceptionHandler.inner.start");
+            logger.info("Exception message - " + throwable.getMessage());
+            logger.info("Method name - " + method.getName());
             for (Object param : obj) {
-                System.out.println("Parameter value - " + param);
+                logger.info("Parameter value - " + param);
             }
         };
     }

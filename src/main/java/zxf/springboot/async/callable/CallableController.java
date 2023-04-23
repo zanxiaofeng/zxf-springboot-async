@@ -1,5 +1,7 @@
 package zxf.springboot.async.callable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,49 +12,50 @@ import java.util.concurrent.Callable;
 @RestController
 @RequestMapping("/callables")
 public class CallableController {
+    private static final Logger logger = LoggerFactory.getLogger(CallableController.class);
 
     @GetMapping("/success")
     public Callable<String> success() {
-        System.out.println("CallableController::success.start：" + Thread.currentThread().getName());
+        logger.info("CallableController::success.start");
         Callable<String> result = () -> {
-            System.out.println("CallableController::success.inner.start：" + Thread.currentThread().getName());
+            logger.info("CallableController::success.inner.start");
             Thread.sleep(1000);
-            System.out.println("CallableController::success.inner.end：" + Thread.currentThread().getName());
+            logger.info("CallableController::success.inner.end");
             return LocalDateTime.now().toString();
         };
 
-        System.out.println("CallableController::success.end：" + Thread.currentThread().getName());
+        logger.info("CallableController::success.end");
         return result;
     }
 
     @GetMapping("/error")
     public Callable<String> error() {
-        System.out.println("CallableController::error.start：" + Thread.currentThread().getName());
+        logger.info("CallableController::error.start");
         Callable<String> result = () -> {
-            System.out.println("CallableController::error.inner.start：" + Thread.currentThread().getName());
+            logger.info("CallableController::error.inner.start");
             throw new RuntimeException("Callable error");
         };
 
-        System.out.println("CallableController::error.end：" + Thread.currentThread().getName());
+        logger.info("CallableController::error.end");
         return result;
     }
 
     @GetMapping("/timeout")
     public Callable<String> timeout() {
-        System.out.println("CallableController::timeout.start：" + Thread.currentThread().getName());
+        logger.info("CallableController::timeout.start");
         Callable<String> result = () -> {
-            System.out.println("CallableController::timeout.inner.start：" + Thread.currentThread().getName());
+            logger.info("CallableController::timeout.inner.start");
             try {
                 Thread.sleep(35 * 1000L);
             } catch (InterruptedException e) {
-                System.out.println("CallableController::timeout.inner.exception：" + Thread.currentThread().getName());
+                logger.info("CallableController::timeout.inner.exception");
                 throw e;
             }
-            System.out.println("CallableController::timeout.inner.end：" + Thread.currentThread().getName());
+            logger.info("CallableController::timeout.inner.end");
             return "Callable timeout";
         };
 
-        System.out.println("CallableController::timeout.end：" + Thread.currentThread().getName());
+        logger.info("CallableController::timeout.end");
         return result;
     }
 }
