@@ -33,13 +33,13 @@ public class AsyncController {
     @ResponseBody
     @GetMapping("/success")
     public String success() throws InterruptedException, ExecutionException, TimeoutException {
-        logger.info("AsyncController::success.start");
+        logger.info("::success.start");
         CompletableFuture<String> date = asyncService.date("date");
         CompletableFuture<String> time = asyncService.time("time");
         CompletableFuture completableFuture = CompletableFuture.allOf(date, time);
         completableFuture.get(30, TimeUnit.SECONDS);
         notificationService.notify("success");
-        logger.info("AsyncController::success.end");
+        logger.info("::success.end");
         return "Success-" + date.get() + "T" + time.get();
     }
 
@@ -47,28 +47,28 @@ public class AsyncController {
     @ResponseBody
     @GetMapping("/timeout")
     public String timeout() throws InterruptedException, ExecutionException, TimeoutException {
-        logger.info("AsyncController::timeout.start");
+        logger.info("::timeout.start");
         CompletableFuture<String> date = asyncService.date("date");
         CompletableFuture<String> time = asyncService.time("time");
         CompletableFuture<String> timeout = asyncService.timeout("timeout");
         CompletableFuture completableFuture = CompletableFuture.allOf(date, time, timeout);
         completableFuture.get(30, TimeUnit.SECONDS);
         notificationService.notify("timeout");
-        logger.info("AsyncController::timeout.end");
+        logger.info("::timeout.end");
         return "Timeout-" + date.get() + "T" + time.get() + "-" + timeout.get();
     }
 
     @ResponseBody
     @GetMapping("/error")
     public String error() throws InterruptedException, ExecutionException, TimeoutException {
-        logger.info("AsyncController::error.start");
+        logger.info("::error.start");
         CompletableFuture<String> date = asyncService.date("date");
         CompletableFuture<String> time = asyncService.time("time");
         CompletableFuture<String> error = asyncService.error("error");
         CompletableFuture completableFuture = CompletableFuture.allOf(date, time, error);
         completableFuture.get(30, TimeUnit.SECONDS);
         notificationService.notify("timeout");
-        logger.info("AsyncController::error.end");
+        logger.info("::error.end");
         return "Error-" + date.get() + "T" + time.get() + "-" + error.get();
     }
 }

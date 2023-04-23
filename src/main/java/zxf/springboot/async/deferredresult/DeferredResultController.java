@@ -23,67 +23,67 @@ public class DeferredResultController {
     @ResponseBody
     @GetMapping("/success")
     public DeferredResult<String> success() {
-        logger.info("DeferredResultController::success.start");
+        logger.info("::success.start");
         DeferredResult<String> result = createDeferredResult();
         threadPoolTaskExecutor.submit(() -> {
-            logger.info("DeferredResultController::success.inner.start");
+            logger.info("::success.inner.start");
             result.setResult(LocalDateTime.now().toString());
-            logger.info("DeferredResultController::success.inner.end");
+            logger.info("::success.inner.end");
         });
 
-        logger.info("DeferredResultController::success.end");
+        logger.info("::success.end");
         return result;
     }
 
     @ResponseBody
     @GetMapping("/error")
     public DeferredResult<String> error() {
-        logger.info("DeferredResultController::error.start");
+        logger.info("::error.start");
         DeferredResult<String> result = createDeferredResult();
         threadPoolTaskExecutor.submit(() -> {
-            logger.info("DeferredResultController::error.inner.start");
+            logger.info("::error.inner.start");
             result.setErrorResult(new RuntimeException("DeferredResult error"));
-            logger.info("DeferredResultController::error.inner.end");
+            logger.info("::error.inner.end");
         });
 
-        logger.info("DeferredResultController::error.end");
+        logger.info("::error.end");
         return result;
     }
 
     @ResponseBody
     @GetMapping("/timeout")
     public DeferredResult<String> timeout() {
-        logger.info("DeferredResultController::timeout.start");
+        logger.info("::timeout.start");
         DeferredResult<String> result = createDeferredResult();
         threadPoolTaskExecutor.submit(() -> {
-            logger.info("DeferredResultController::timeout.inner.start");
+            logger.info("::timeout.inner.start");
             try {
                 Thread.sleep(35 * 1000L);
             } catch (InterruptedException e) {
-                logger.info("DeferredResultController::timeout.inner.exception");
+                logger.info("::timeout.inner.exception");
                 throw new RuntimeException(e);
             }
             result.setResult("DeferredResult timeout");
-            logger.info("DeferredResultController::timeout.inner.end");
+            logger.info("::timeout.inner.end");
         });
 
-        logger.info("DeferredResultController::timeout.end");
+        logger.info("::timeout.end");
         return result;
     }
 
     private DeferredResult<String> createDeferredResult() {
         DeferredResult<String> result = new DeferredResult<>(30 * 1000L);
         result.setResultHandler(str -> {
-            logger.info("DeferredResultController.onResult" + ", " + str);
+            logger.info("::onResult" + ", " + str);
         });
         result.onCompletion(() -> {
-            logger.info("DeferredResultController.onCompletion");
+            logger.info("::onCompletion");
         });
         result.onError((error) -> {
-            logger.info("DeferredResultController.onError" + ", " + error);
+            logger.info("::onError" + ", " + error);
         });
         result.onTimeout(() -> {
-            logger.info("DeferredResultController.onTimeout");
+            logger.info("::onTimeout");
         });
         return result;
     }

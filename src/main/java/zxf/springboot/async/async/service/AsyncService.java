@@ -15,36 +15,36 @@ public class AsyncService {
     private static final Logger logger = LoggerFactory.getLogger(AsyncService.class);
     @Async
     public CompletableFuture<String> date(String message) throws InterruptedException {
-        logger.info("AsyncService::date.start");
+        logger.info("::date.start");
         Thread.sleep(10 * 1000L);
-        logger.info("AsyncService::date.end");
+        logger.info("::date.end");
         return CompletableFuture.completedFuture(LocalDate.now().toString());
     }
 
     @Async
     public CompletableFuture<String> time(String message) throws InterruptedException {
-        logger.info("AsyncService::time.start");
+        logger.info("::time.start");
         Thread.sleep(10 * 1000L);
-        logger.info("AsyncService::time.end");
+        logger.info("::time.end");
         return CompletableFuture.completedFuture(LocalTime.now().toString());
     }
 
     @Async
     public CompletableFuture<String> timeout(String message) throws InterruptedException {
-        logger.info("AsyncService::timeout.start");
+        logger.info("::timeout.start");
         try {
             Thread.sleep(35 * 1000L);
         } catch (InterruptedException e) {
-            logger.info("AsyncService::timeout.exception");
+            logger.info("::timeout.exception");
             throw e;
         }
-        logger.info("AsyncService::timeout.end");
+        logger.info("::timeout.end");
         return CompletableFuture.completedFuture("Async timeout");
     }
 
     @Async
     public CompletableFuture<String> error(String message) throws InterruptedException {
-        logger.info("AsyncService::error.start");
+        logger.info("::error.start");
         Thread.sleep(10 * 1000L);
         throw new RuntimeException("Async error");
     }

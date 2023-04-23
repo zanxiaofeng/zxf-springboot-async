@@ -16,46 +16,46 @@ public class CallableController {
 
     @GetMapping("/success")
     public Callable<String> success() {
-        logger.info("CallableController::success.start");
+        logger.info("::success.start");
         Callable<String> result = () -> {
-            logger.info("CallableController::success.inner.start");
+            logger.info("::success.inner.start");
             Thread.sleep(1000);
-            logger.info("CallableController::success.inner.end");
+            logger.info("::success.inner.end");
             return LocalDateTime.now().toString();
         };
 
-        logger.info("CallableController::success.end");
+        logger.info("::success.end");
         return result;
     }
 
     @GetMapping("/error")
     public Callable<String> error() {
-        logger.info("CallableController::error.start");
+        logger.info("::error.start");
         Callable<String> result = () -> {
-            logger.info("CallableController::error.inner.start");
+            logger.info("::error.inner.start");
             throw new RuntimeException("Callable error");
         };
 
-        logger.info("CallableController::error.end");
+        logger.info("::error.end");
         return result;
     }
 
     @GetMapping("/timeout")
     public Callable<String> timeout() {
-        logger.info("CallableController::timeout.start");
+        logger.info("::timeout.start");
         Callable<String> result = () -> {
-            logger.info("CallableController::timeout.inner.start");
+            logger.info("::timeout.inner.start");
             try {
                 Thread.sleep(35 * 1000L);
             } catch (InterruptedException e) {
-                logger.info("CallableController::timeout.inner.exception");
+                logger.info("::timeout.inner.exception");
                 throw e;
             }
-            logger.info("CallableController::timeout.inner.end");
+            logger.info("::timeout.inner.end");
             return "Callable timeout";
         };
 
-        logger.info("CallableController::timeout.end");
+        logger.info("::timeout.end");
         return result;
     }
 }

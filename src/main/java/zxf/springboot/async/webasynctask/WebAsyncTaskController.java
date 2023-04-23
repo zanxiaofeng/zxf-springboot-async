@@ -19,59 +19,59 @@ public class WebAsyncTaskController {
     @ResponseBody
     @GetMapping("/success")
     public WebAsyncTask<String> success() {
-        logger.info("WebAsyncTaskController::success.start");
+        logger.info("::success.start");
         WebAsyncTask<String> result = createWebAsyncTask(() -> {
-            logger.info("WebAsyncTaskController::success.inner.start");
-            logger.info("WebAsyncTaskController::success.inner.end");
+            logger.info("::success.inner.start");
+            logger.info("::success.inner.end");
             return LocalDateTime.now().toString();
         });
-        logger.info("WebAsyncTaskController::success.end");
+        logger.info("::success.end");
         return result;
     }
 
     @ResponseBody
     @GetMapping("/error")
     public WebAsyncTask<String> error() {
-        logger.info("WebAsyncTaskController::error.start");
+        logger.info("::error.start");
         WebAsyncTask<String> result = createWebAsyncTask(() -> {
-            logger.info("WebAsyncTaskController::error.inner.start");
+            logger.info("::error.inner.start");
             throw new RuntimeException("DeferredResult error");
         });
-        logger.info("WebAsyncTaskController::error.end");
+        logger.info("::error.end");
         return result;
     }
 
     @ResponseBody
     @GetMapping("/timeout")
     public WebAsyncTask<String> timeout() {
-        logger.info("WebAsyncTaskController::timeout.start");
+        logger.info("::timeout.start");
         WebAsyncTask<String> result = createWebAsyncTask(() -> {
-            logger.info("WebAsyncTaskController::timeout.inner.start");
+            logger.info("::timeout.inner.start");
             try {
                 Thread.sleep(35 * 1000L);
             } catch (InterruptedException e) {
-                logger.info("WebAsyncTaskController::timeout.inner.exception");
+                logger.info("::timeout.inner.exception");
                 throw e;
             }
-            logger.info("WebAsyncTaskController::timeout.inner.end");
+            logger.info("::timeout.inner.end");
             return "WebAsyncTask timeout";
         });
 
-        logger.info("WebAsyncTaskController::timeout.end");
+        logger.info("::timeout.end");
         return result;
     }
 
     private WebAsyncTask<String> createWebAsyncTask(Callable<String> callable) {
         WebAsyncTask<String> result = new WebAsyncTask<>(30 * 1000L, callable);
         result.onCompletion(() -> {
-            logger.info("WebAsyncTaskController::onCompletion");
+            logger.info("::onCompletion");
         });
         result.onTimeout(() -> {
-            logger.info("WebAsyncTaskController::onTimeout");
+            logger.info("::onTimeout");
             return "WebAsyncTask timeout callback";
         });
         result.onError(() -> {
-            logger.info("WebAsyncTaskController::onError");
+            logger.info("::onError");
             return "WebAsyncTask error callback";
         });
         return result;

@@ -10,8 +10,8 @@ public class NotificationService {
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
     @Async
     public void notify(String message) throws InterruptedException {
-        logger.info("NotificationService::notify.start：" + message);
+        logger.info("::notify.start：" + message);
         Thread.sleep(10 * 1000L);
-        logger.info("NotificationService::notify.end：" + message);
+        logger.info("::notify.end：" + message);
     }
 }
