@@ -12,3 +12,8 @@
 - localhost:8082/web-async-tasks/success
 - localhost:8082/web-async-tasks/error
 - localhost:8082/web-async-tasks/timeout
+- 
+# Test Async
+- localhost:8082/async/success
+- localhost:8082/async/error
+- localhost:8082/async/timeout
