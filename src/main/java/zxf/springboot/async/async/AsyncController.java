@@ -39,7 +39,7 @@ public class AsyncController {
         CompletableFuture completableFuture = CompletableFuture.allOf(date, time);
         completableFuture.get(30, TimeUnit.SECONDS);
         notificationService.notify("success");
-        logger.info("::success.end");
+        logger.info("::success.end, {}", date);
         return "Success-" + date.get() + "T" + time.get();
     }
 

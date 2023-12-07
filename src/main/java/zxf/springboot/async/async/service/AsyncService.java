@@ -13,12 +13,14 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class AsyncService {
     private static final Logger logger = LoggerFactory.getLogger(AsyncService.class);
+
     @Async
     public CompletableFuture<String> date(String message) throws InterruptedException {
         logger.info("::date.start");
         Thread.sleep(10 * 1000L);
-        logger.info("::date.end");
-        return CompletableFuture.completedFuture(LocalDate.now().toString());
+        CompletableFuture<String> result = CompletableFuture.completedFuture(LocalDate.now().toString());
+        logger.info("::date.end, {}", result);
+        return result;
     }
 
     @Async
