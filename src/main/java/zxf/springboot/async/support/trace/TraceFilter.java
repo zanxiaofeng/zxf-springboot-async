@@ -19,6 +19,7 @@ import java.io.IOException;
 @Component
 @WebFilter(urlPatterns = "/*")
 @Order(value = Ordered.HIGHEST_PRECEDENCE)
+//This servlet filter will be the first filter
 public class TraceFilter extends GenericFilterBean {
     private static final Logger slfLogger = LoggerFactory.getLogger(TraceFilter.class);
 
