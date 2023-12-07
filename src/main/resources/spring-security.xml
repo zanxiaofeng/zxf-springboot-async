@@ -9,10 +9,14 @@
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security.xsd">
-    <http use-expressions="true">
+<!--    <debug/>-->
+    <http use-expressions="true" entry-point-ref="authenticationEntryPoint">
         <intercept-url pattern="/**" access="permitAll()"/>
         <csrf disabled="true"/>
     </http>
+    <beans:bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint">
+        <beans:property name="realmName" value="My Realm"/>
+    </beans:bean>
     <authentication-manager>
         <authentication-provider>
             <user-service>
