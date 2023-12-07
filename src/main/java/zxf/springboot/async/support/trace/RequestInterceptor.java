@@ -13,6 +13,7 @@ public class RequestInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        //RequestInterceptor.preHandle在异步场景下同一个Ｈttp请求会调用多次
         MDC.put(TraceConstant.TRACE_ID, TraceIdGenerator.generateTraceId(TraceConstant.WEB_REQUEST));
         logger.info("===> New request, Path : {}", request.getRequestURI());
         return true;
@@ -20,6 +21,7 @@ public class RequestInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        //RequestInterceptor.afterCompletion在异步场景下同一个Ｈttp请求会调用多次
         logger.info("<=== End request");
         MDC.remove(TraceConstant.TRACE_ID);
     }
